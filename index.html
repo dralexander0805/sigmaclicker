@@ -85,7 +85,9 @@
 </style>
 </head>
 <body>
-    <div id="myModal" class="modal">
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
 
   <!-- Modal content -->
   <div class="modal-content">
@@ -99,7 +101,37 @@
 
 </div>
 
+<div id="header">
+    <h1>sigma clicker</h1>
+    <div id="sigmacounter">sigmas: 0</div>
+</div>
+<div id="container">
+    <div class="category">
+        <h2>Generators</h2>
+        <div class="generator">click to create sigma<br><button onclick="clickSigma()">Create Sigma</button></div>
+        <div class="generator">buy mogger (10 sigmas)<br><button onclick="buyMogger()">Buy Mogger</button></div>
+        <div class="generator">buy skibidi (100 sigmas)<br><button onclick="buySkibidi()">Buy Skibidi</button></div>
+        <div class="generator" id="unnamedbutton" style="display:none;">unnamed generator (10,000 sigmas)<br><button onclick="buyUnnamed()">Buy Unnamed Generator</button></div>
+    </div>
+    <div class="category" id="upgradesContainer" style="display:none;">
+        <h2>Upgrades</h2>
+        <div class="upgrade" id="upgradebutton" style="display:none;">buy upgrade (50,000 sigmas)<br><button onclick="buyUpgrade()">Buy Upgrade</button></div>
+        <div class="upgrade" id="movetohiobutton" style="display:none;">move to ohio (10,000,000 sigmas)<br><button class="disabled" onmouseover="showAlreadyInOhioMessage()" onclick="buyMoveToOhio()">Move to Ohio</button></div>
+    </div>
+</div>
+
 <script>
+    let sigmas = parseInt(localStorage.getItem("sigmas")) || 0;
+    let moggers = parseInt(localStorage.getItem("moggers")) || 0;
+    let skibidis = parseInt(localStorage.getItem("skibidis")) || 0;
+    let unnamed = parseInt(localStorage.getItem("unnamed")) || 0;
+    let upgrades = parseInt(localStorage.getItem("upgrades")) || 0;
+    let moveToOhioPurchased = localStorage.getItem("moveToOhioPurchased") === 'true' || false;
+
+    let moggerMultiplier = 1;
+    let skibidiMultiplier = 1;
+    let unnamedMultiplier = 1;
+
     // Get the modal
     var modal = document.getElementById('myModal');
 
@@ -116,199 +148,165 @@
     // Close the modal and start the game when the user agrees to terms
     function acceptTerms() {
         modal.style.display = "none";
-        // Start your game logic here...
-    }
-</script>
-
-    <div id="header">
-        <h1>sigma clicker</h1>
-        <div id="sigmacounter">sigmas: 0</div>
-    </div>
-    <div id="container">
-        <div class="category">
-            <h2>Generators</h2>
-            <div class="generator">click to create sigma<br><button onclick="clickSigma()">Create Sigma</button></div>
-            <div class="generator">buy mogger (10 sigmas)<br><button onclick="buyMogger()">Buy Mogger</button></div>
-            <div class="generator">buy skibidi (100 sigmas)<br><button onclick="buySkibidi()">Buy Skibidi</button></div>
-            <div class="generator" id="unnamedbutton" style="display:none;">unnamed generator (10,000 sigmas)<br><button onclick="buyUnnamed()">Buy Unnamed Generator</button></div>
-        </div>
-        <div class="category" id="upgradesContainer" style="display:none;">
-            <h2>Upgrades</h2>
-            <div class="upgrade" id="upgradebutton" style="display:none;">buy upgrade (50,000 sigmas)<br><button onclick="buyUpgrade()">Buy Upgrade</button></div>
-            <div class="upgrade" id="movetohiobutton" style="display:none;">move to ohio (10,000,000 sigmas)<br><button class="disabled" onmouseover="showAlreadyInOhioMessage()" onclick="buyMoveToOhio()">Move to Ohio</button></div>
-        </div>
-    </div>
-
-    <script>
-        let sigmas = parseInt(localStorage.getItem("sigmas")) || 0;
-        let moggers = parseInt(localStorage.getItem("moggers")) || 0;
-        let skibidis = parseInt(localStorage.getItem("skibidis")) || 0;
-        let unnamed = parseInt(localStorage.getItem("unnamed")) || 0;
-        let upgrades = parseInt(localStorage.getItem("upgrades")) || 0;
-        let moveToOhioPurchased = localStorage.getItem("moveToOhioPurchased") === 'true' || false;
-
-        let moggerMultiplier = 1;
-        let skibidiMultiplier = 1;
-        let unnamedMultiplier = 1;
-
-        // Update display on page load
-        updatesigmacounter();
         updateUpgradeMenu();
-
-        // Start moggers, skibidis, and unnamed generator immediately
         startMogger();
         startSkibidi();
         startUnnamed();
+    }
 
-        function updatesigmacounter() {
-            document.getElementById("sigmacounter").innerText = "sigmas: " + sigmas;
-            
-            // Check if new button condition is met
-            if (sigmas >= 10000 && document.getElementById("unnamedbutton").style.display === "none") {
-                document.getElementById("unnamedbutton").style.display = "inline-block";
-            }
+    // Update display on page load
+    updatesigmacounter();
 
-            if (sigmas >= 50000 && document.getElementById("upgradebutton").style.display === "none") {
-                document.getElementById("upgradebutton").style.display = "inline-block";
-                document.getElementById("upgradesContainer").style.display = "inline-block";
-            }
-
-            if (sigmas >= 1000000 && !moveToOhioPurchased) {
-                document.getElementById("movetohiobutton").style.display = "inline-block";
-            }
-            // Update Move to Ohio button disabled status
-            document.getElementById("movetohiobutton").classList.toggle("disabled", moveToOhioPurchased);
+    function updatesigmacounter() {
+        document.getElementById("sigmacounter").innerText = "sigmas: " + sigmas;
+        
+        // Check if new button condition is met
+        if (sigmas >= 10000 && document.getElementById("unnamedbutton").style.display === "none") {
+            document.getElementById("unnamedbutton").style.display = "inline-block";
         }
 
-        function updateUpgradeMenu() {
-            if (sigmas >= 50000) {
-                document.getElementById("upgradebutton").style.display = "inline-block";
-                document.getElementById("upgradesContainer").style.display = "inline-block";
-            }
+        if (sigmas >= 50000 && document.getElementById("upgradebutton").style.display === "none") {
+            document.getElementById("upgradebutton").style.display = "inline-block";
+            document.getElementById("upgradesContainer").style.display = "inline-block";
         }
 
-        function clickSigma() {
-            sigmas++;
+        if (sigmas >= 1000000 && !moveToOhioPurchased) {
+            document.getElementById("movetohiobutton").style.display = "inline-block";
+        }
+        // Update Move to Ohio button disabled status
+        document.getElementById("movetohiobutton").classList.toggle("disabled", moveToOhioPurchased);
+    }
+
+    function updateUpgradeMenu() {
+        if (sigmas >= 50000) {
+            document.getElementById("upgradebutton").style.display = "inline-block";
+            document.getElementById("upgradesContainer").style.display = "inline-block";
+        }
+    }
+
+    function clickSigma() {
+        sigmas++;
+        updatesigmacounter();
+        saveProgress();
+    }
+
+    function buyMogger() {
+        if (sigmas >= 10) {
+            sigmas -= 10;
+            moggers++;
             updatesigmacounter();
             saveProgress();
+        } else {
+            alert("not enough sigmas to buy a mogger!");
         }
+    }
 
-        function buyMogger() {
-            if (sigmas >= 10) {
-                sigmas -= 10;
-                moggers++;
-                updatesigmacounter();
-                saveProgress();
-            } else {
-                alert("not enough sigmas to buy a mogger!");
-            }
-        }
-
-        function buySkibidi() {
-            if (sigmas >= 100) {
-                sigmas -= 100;
-                skibidis++;
-                updatesigmacounter();
-                saveProgress();
-            } else {
-                alert("not enough sigmas to buy a skibidi!");
-            }
-        }
-
-        function startMogger() {
-            setInterval(function() {
-                sigmas += moggers * moggerMultiplier;
-                updatesigmacounter();
-                saveProgress();
-            }, 1000); // moggers produce sigmas every second
-        }
-
-        function startSkibidi() {
-            setInterval(function() {
-                sigmas += skibidis * 2 * skibidiMultiplier;
-                updatesigmacounter();
-                saveProgress();
-            }, 1000); // skibidis produce sigmas every second
-        }
-
-        function startUnnamed() {
-            setInterval(function() {
-                sigmas += unnamed * 10 * unnamedMultiplier;
-                updatesigmacounter();
-                saveProgress();
-            }, 1000); // unnamed generator produces sigmas every second
-        }
-
-        function buyUnnamed() {
-            if (sigmas >= 10000) {
-                sigmas -= 10000;
-                unnamed++;
-                updatesigmacounter();
-                saveProgress();
-            } else {
-                alert("not enough sigmas to buy the unnamed generator!");
-            }
-        }
-
-        function buyUpgrade() {
-            if (sigmas >= 50000) {
-                sigmas -= 50000;
-                upgrades++;
-                moggerMultiplier += 0.5; // Increase mogger production rate
-                skibidiMultiplier += 0.5; // Increase skibidi production rate
-                unnamedMultiplier += 0.5; // Increase unnamed generator production rate
-                updatesigmacounter();
-                saveProgress();
-            } else {
-                alert("not enough sigmas to buy the upgrade!");
-            }
-        }
-
-        function buyMoveToOhio() {
-            if (moveToOhioPurchased) {
-                alert("You are already in Ohio!");
-            } else {
-                alert("You cannot afford to move to Ohio!");
-            }
-        }
-
-        function saveProgress() {
-            localStorage.setItem("sigmas", sigmas);
-            localStorage.setItem("moggers", moggers);
-            localStorage.setItem("skibidis", skibidis);
-            localStorage.setItem("unnamed", unnamed);
-            localStorage.setItem("upgrades", upgrades);
-            localStorage.setItem("moveToOhioPurchased", moveToOhioPurchased);
-            localStorage.setItem("moggerMultiplier", moggerMultiplier);
-            localStorage.setItem("skibidiMultiplier", skibidiMultiplier);
-            localStorage.setItem("unnamedMultiplier", unnamedMultiplier);
-        }
-
-        function clearProgress() {
-            localStorage.clear();
-            sigmas = 0;
-            moggers = 0;
-            skibidis = 0;
-            unnamed = 0;
-            upgrades = 0;
-            moggerMultiplier = 1;
-            skibidiMultiplier = 1;
-            unnamedMultiplier = 1;
+    function buySkibidi() {
+        if (sigmas >= 100) {
+            sigmas -= 100;
+            skibidis++;
             updatesigmacounter();
-        }
-
-        function showAlreadyInOhioMessage() {
-            if (moveToOhioPurchased) {
-                alert("You are already in Ohio!");
-            }
-        }
-
-        window.addEventListener('beforeunload', function (e) {
             saveProgress();
-        });
+        } else {
+            alert("not enough sigmas to buy a skibidi!");
+        }
+    }
 
-        // Function to clear progress from console
-        window.clearProgress = clearProgress;
-    </script>
+    function startMogger() {
+        setInterval(function() {
+            sigmas += moggers * moggerMultiplier;
+            updatesigmacounter();
+            saveProgress();
+        }, 1000); // moggers produce sigmas every second
+    }
+
+    function startSkibidi() {
+        setInterval(function() {
+            sigmas += skibidis * 2 * skibidiMultiplier;
+            updatesigmacounter();
+            saveProgress();
+        }, 1000); // skibidis produce sigmas every second
+    }
+
+    function startUnnamed() {
+        setInterval(function() {
+            sigmas += unnamed * 10 * unnamedMultiplier;
+            updatesigmacounter();
+            saveProgress();
+        }, 1000); // unnamed generator produces sigmas every second
+    }
+
+    function buyUnnamed() {
+        if (sigmas >= 10000) {
+            sigmas -= 10000;
+            unnamed++;
+            updatesigmacounter();
+            saveProgress();
+        } else {
+            alert("not enough sigmas to buy the unnamed generator!");
+        }
+    }
+
+    function buyUpgrade() {
+        if (sigmas >= 50000) {
+            sigmas -= 50000;
+            upgrades++;
+            moggerMultiplier += 0.5; // Increase mogger production rate
+            skibidiMultiplier += 0.5; // Increase skibidi production rate
+            unnamedMultiplier += 0.5; // Increase unnamed generator production rate
+            updatesigmacounter();
+            saveProgress();
+        } else {
+            alert("not enough sigmas to buy the upgrade!");
+        }
+    }
+
+    function buyMoveToOhio() {
+        if (moveToOhioPurchased) {
+            alert("You are already in Ohio!");
+        } else {
+            alert("You cannot afford to move to Ohio!");
+        }
+    }
+
+    function saveProgress() {
+        localStorage.setItem("sigmas", sigmas);
+        localStorage.setItem("moggers", moggers);
+        localStorage.setItem("skibidis", skibidis);
+        localStorage.setItem("unnamed", unnamed);
+        localStorage.setItem("upgrades", upgrades);
+        localStorage.setItem("moveToOhioPurchased", moveToOhioPurchased);
+        localStorage.setItem("moggerMultiplier", moggerMultiplier);
+        localStorage.setItem("skibidiMultiplier", skibidiMultiplier);
+        localStorage.setItem("unnamedMultiplier", unnamedMultiplier);
+    }
+
+    function clearProgress() {
+        localStorage.clear();
+        sigmas = 0;
+        moggers = 0;
+        skibidis = 0;
+        unnamed = 0;
+        upgrades = 0;
+        moggerMultiplier = 1;
+        skibidiMultiplier = 1;
+        unnamedMultiplier = 1;
+        updatesigmacounter();
+    }
+
+    function showAlreadyInOhioMessage() {
+        if (moveToOhioPurchased) {
+            alert("You are already in Ohio!");
+        }
+    }
+
+    window.addEventListener('beforeunload', function (e) {
+        saveProgress();
+    });
+
+    // Function to clear progress from console
+    window.clearProgress = clearProgress;
+</script>
+
 </body>
 </html>
