@@ -82,20 +82,32 @@
         text-decoration: none;
         cursor: pointer;
     }    
+      /* Scrollable text box */
+    .scrollable-box {
+        max-height: 200px; /* Set a fixed height for scrolling */
+        overflow-y: auto; /* Enable vertical scrolling */
+    }
 </style>
 </head>
 <body>
 
-<!-- The Modal -->
 <div id="myModal" class="modal">
 
   <!-- Modal content -->
   <div class="modal-content">
     <span class="close" onclick="closeModal()">&times;</span>
     <h2>Terms of Service</h2>
-    <p>This is the terms of service for Sigma Clicker...</p>
+    <div class="scrollable-box">
+        <p>This is the terms of service for Sigma Clicker...</p>
+        <!-- Add your terms of service text here -->
+        <!-- You can wrap your terms of service text inside this scrollable box -->
+    </div>
     <h2>Privacy Policy</h2>
-    <p>This is the privacy policy for Sigma Clicker...</p>
+    <div class="scrollable-box">
+        <p>This is the privacy policy for Sigma Clicker...</p>
+        <!-- Add your privacy policy text here -->
+        <!-- You can wrap your privacy policy text inside this scrollable box -->
+    </div>
     <button onclick="acceptTerms()">I Agree</button>
   </div>
 
@@ -103,7 +115,6 @@
 
 <div id="header">
     <h1>sigma clicker</h1>
-    <t>test</t>
     <div id="sigmacounter">sigmas: 0</div>
 </div>
 <div id="container">
