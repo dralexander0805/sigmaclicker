@@ -28,6 +28,6 @@ Simply go to [This Link](https://dralexander0805.github.io/sigmaclicker/) in a w
 - JavaScript
 
 ## Author
-This game was created by Jack S.
+This game was created by Jack S. and no one else, anyone who claims credit of the game is lying.
 
 Enjoy playing Sigma Clicker!
