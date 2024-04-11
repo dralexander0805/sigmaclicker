@@ -292,7 +292,7 @@ You are advised to review this Privacy Policy periodically for any changes. Chan
 
     function startSkibidi() {
         setInterval(function() {
-            sigmas += skibidis * 2 * skibidiMultiplier;
+            sigmas += skibidis * 10 * skibidiMultiplier;
             updatesigmacounter();
             saveProgress();
         }, 1000); // skibidis produce sigmas every second
@@ -300,7 +300,7 @@ You are advised to review this Privacy Policy periodically for any changes. Chan
 
     function startUnnamed() {
         setInterval(function() {
-            sigmas += unnamed * 10 * unnamedMultiplier;
+            sigmas += unnamed * 100 * unnamedMultiplier;
             updatesigmacounter();
             saveProgress();
         }, 1000); // unnamed generator produces sigmas every second
