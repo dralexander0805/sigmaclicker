@@ -332,10 +332,10 @@ You are advised to review this Privacy Policy periodically for any changes. Chan
     }
 
     function buyMoveToOhio() {
-        if (moveToOhioPurchased) {
-            alert("You are already in Ohio!");
-        } else {
-            alert("You cannot afford to move to Ohio!");
+        if (sigmas >= 10000000 && !moveToOhioPurchased) {
+            moveToOhioPurchased = true;
+            updatesigmacounter();
+            saveProgress();
         }
     }
 
