@@ -331,14 +331,18 @@ You are advised to review this Privacy Policy periodically for any changes. Chan
         }
     }
 
-    function buyMoveToOhio() {
-        if (sigmas >= 10000000 && !moveToOhioPurchased) {
-            moveToOhioPurchased = true;
-            updatesigmacounter();
-            saveProgress();
-        }
+   function buyMoveToOhio() {
+    if (sigmas >= 10000000 && !moveToOhioPurchased) {
+        moveToOhioPurchased = true;
+        updatesigmacounter();
+        saveProgress();
+    } else if (moveToOhioPurchased) {
+        alert("You are already in Ohio!");
+    } else {
+        alert("You cannot afford to move to Ohio!");
     }
-
+}
+    
     function saveProgress() {
         localStorage.setItem("sigmas", sigmas);
         localStorage.setItem("moggers", moggers);
